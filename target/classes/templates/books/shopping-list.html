@@ -43,37 +43,69 @@
                         <a class="btn btn-warning btn-sm mt-1 mx-1 px-2" href="loginregister.html?register=1">Logout</a>
                     </li>
                     <!--Shopping cart-->
-                    <!--TODO: 1.Link button to cart page 2.show dynamic cart item numbers-->
-                    <form class="d-flex">
-                        <button class="btn btn-outline-dark" type="submit">
-                            <i class="bi-cart-fill me-1"></i>
-                            Cart
-                            <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
-                        </button>
-                    </form>
+                    <li class="nav-item ">
+                        <a href="shoppingcart.html" target="_self"><i
+                                class="bi bi-cart-check-fill display-6 icon-link mx-2"></i></a>
+                    </li>
                 </ul>
             </div>
         </div>
     </nav>
     <!-- Header-->
-    <header class="bg-dark py-5 mb-3">
+
+    <header class="bg-light py-5 mb-2">
         <div class="container px-4 px-lg-5 my-5">
-            <div class="text-center text-white">
+            <div class="text-center text-dark">
                 <h1 class="display-4 fw-bolder">Reading </h1>
-                <p class="lead fw-normal text-white-50 mb-0">Easily manage your book inventory</p>
+                <p class="lead fw-normal text-dark-50 mb-0">makes your life an adventure</p>
             </div>
         </div>
     </header>
 
+
     <!--Main Content-->
     <div class="container">
+
+
+        <!-- Section-->
+
+        <section class="py-5">
+            <div class="container px-4 px-lg-5 mt-5">
+                <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+                    <div class="col mb-5" th:each="tempBook:${availableBooks}">
+                        <div class="card h-100">
+                            <!-- Product image-->
+                            <img class="card-img-top py-2 px-3" th:src="${tempBook.image_url}" alt="book-image"
+                                width="100" height="300" />
+                            <!-- Product details-->
+                            <div class="card-body p-4">
+                                <!-- Book author-->
+                                <p th:text="${tempBook.author}"></p>
+                                <!-- Book title-->
+                                <h5 class="fw-bolder" th:text="${tempBook.title}"></h5>
+                                <!-- Product price-->
+                                <h6 th:text="'$'+${tempBook.price}"></h6>
+                            </div>
+                            <!-- Product actions-->
+                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                                <a class="btn btn-outline-dark mt-auto"
+                                    th:href="@{/books/showProductDetails(bookId=${tempBook.id})}">View
+                                    Details</a>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
 
 
     </div>
     <!-- Footer-->
     <footer class="py-5 bg-dark">
         <div class="container">
-            <p class="m-0 text-center text-white">Copyright &copy; BookStore Website 2023</p>
+            <p class="m-0 text-center text-white">Copyright &copy; Your Website 2023</p>
         </div>
     </footer>
 </body>

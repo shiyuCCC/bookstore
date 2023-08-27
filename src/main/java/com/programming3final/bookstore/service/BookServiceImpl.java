@@ -1,5 +1,6 @@
 package com.programming3final.bookstore.service;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,6 +33,11 @@ public class BookServiceImpl implements BookService {
             throw new RuntimeException("Did not find book id - " + theId);
         }
         return theBook;
+    }
+
+    @Override
+    public List<Book> findAllAvailableBooks() {
+        return bookRepository.findAllAvailableBooks();
     }
 
     @Override

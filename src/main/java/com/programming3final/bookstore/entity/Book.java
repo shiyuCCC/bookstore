@@ -56,13 +56,19 @@ public class Book {
     @Column(name = "image_url")
     private String image_url;
 
+    @Column(name = "price")
+    private int price;
+
+    @Column(name = "description")
+    private String description;
+
     // constructors: 1.default 2. with id 3.without id
 
     public Book() {
     }
 
     public Book(int id, String isbn, String title, String author, String category, int quantity,
-            Availability availability) {
+            Availability availability, String image_url, int price, String description) {
         this.id = id;
         this.isbn = isbn;
         this.title = title;
@@ -70,15 +76,22 @@ public class Book {
         this.category = category;
         this.quantity = quantity;
         this.availability = availability;
+        this.image_url = image_url;
+        this.price = price;
+        this.description = description;
     }
 
-    public Book(String isbn, String title, String author, String category, int quantity, Availability availability) {
+    public Book(String isbn, String title, String author, String category, int quantity, Availability availability,
+            String image_url, int price, String description) {
         this.isbn = isbn;
         this.title = title;
         this.author = author;
         this.category = category;
         this.quantity = quantity;
         this.availability = availability;
+        this.image_url = image_url;
+        this.price = price;
+        this.description = description;
     }
 
     // setters and getters
@@ -137,6 +150,30 @@ public class Book {
 
     public void setAvailability(Availability availability) {
         this.availability = availability;
+    }
+
+    public String getImage_url() {
+        return this.image_url;
+    }
+
+    public void setImage_url(String image_url) {
+        this.image_url = image_url;
+    }
+
+    public int getPrice() {
+        return this.price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
+    public String getDescription() {
+        return this.description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
 }

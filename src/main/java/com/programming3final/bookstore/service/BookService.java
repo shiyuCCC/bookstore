@@ -10,6 +10,8 @@ public interface BookService {
 
     Book findById(int theId);
 
+    List<Book> findAllAvailableBooks();
+
     void save(Book theBook);
 
     void deleteById(int theId);

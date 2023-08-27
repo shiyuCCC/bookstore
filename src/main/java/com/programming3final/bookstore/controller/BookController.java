@@ -33,6 +33,13 @@ public class BookController {
         return "books/inventory-book";
     }
 
+    @GetMapping("/shoppingList")
+    public String listAvailableBook(Model theModel) {
+        List<Book> theBooks = bookService.findAllAvailableBooks();
+        theModel.addAttribute("availableBooks", theBooks);
+        return "books/shopping-list";
+    }
+
     @GetMapping("/showFormForAdd")
     public String showForm(Model theModel) {
         Book theBook = new Book();
@@ -55,6 +62,14 @@ public class BookController {
         Book theBook = bookService.findById(theId); // use book entity and JPA
         theModel.addAttribute("book", theBook);
         return "books/form-book";
+
+    }
+
+    @GetMapping("/showProductDetails")
+    public String showProductDetails(@RequestParam("bookId") int theId, Model theModel) {
+        Book theBook = bookService.findById(theId);
+        theModel.addAttribute("book", theBook);
+        return "/books/product-details";
     }
 
     @GetMapping("/delete")
