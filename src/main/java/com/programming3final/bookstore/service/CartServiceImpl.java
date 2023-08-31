@@ -9,6 +9,8 @@ import com.programming3final.bookstore.dao.CartRepository;
 import com.programming3final.bookstore.entity.Cart;
 import com.programming3final.bookstore.entity.CartInfoDTO;
 
+import jakarta.transaction.Transactional;
+
 @Service
 public class CartServiceImpl implements CartService {
 
@@ -48,6 +50,12 @@ public class CartServiceImpl implements CartService {
     @Override
     public List<CartInfoDTO> getCartInfo(String username) {
         return cartRepository.getCartInfoForUser(username);
+    }
+
+    @Transactional
+    @Override
+    public void deleteAllByIdIn(List<Integer> itemIds) {
+        cartRepository.deleteAllByIdIn(itemIds);
     }
 
 }

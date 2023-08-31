@@ -15,4 +15,6 @@ public interface CartService {
     void deleteById(int theId);
 
     List<CartInfoDTO> getCartInfo(String username);
+
+    void deleteAllByIdIn(List<Integer> itemIds);
 }

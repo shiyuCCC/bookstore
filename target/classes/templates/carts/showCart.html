@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Template</title>
+    <title>ShoppingCart</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
@@ -49,7 +49,7 @@
                     <!--Shopping cart-->
                     <!--TODO: 1.Link button to cart page 2.show dynamic cart item numbers-->
                     <a class="btn btn-outline-dark"
-                        th:href="@{/cart/cartInfoByUser(username=${#authentication.principal.username})}">
+                        th:href="@{/cart/cartInfoByUser(username=${#authentication.principal.username})}"> <!--add #-->
                         <i class="bi-cart-fill me-1"></i>
                         Cart
                         <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
@@ -90,19 +90,22 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr th:each="tempCart:${cartsInfo}">
+                                    <tr th:each="tempCart:${cartsInfo}" class="cart-item"
+                                        th:data-cart-id="${tempCart.cartId}">
                                         <th scope=" row">
                                             <div class="d-flex align-items-center">
                                                 <img th:src="${tempCart.bookImage}" class="img-fluid rounded-3"
                                                     style="width: 120px;" alt="Book">
                                                 <div class="flex-column ms-4">
-                                                    <p class="mb-2" th:text="${tempCart.bookTitle}"></p>
+                                                    <p class="mb-2" th:text="${tempCart.bookTitle}">
+                                                    </p>
                                                     <p class="mb-0" th:text="${tempCart.bookAuthor}"></p>
                                                 </div>
                                             </div>
                                         </th>
                                         <td class="align-middle">
-                                            <p class="mb-0" style="font-weight: 500;" th:text="${tempCart.bookAuthor}">
+                                            <p class="mb-0" style="font-weight: 500;"
+                                                th:text="${tempCart.bookCategory}">
                                             </p>
                                             </p>
                                         </td>
@@ -132,7 +135,7 @@
                                         <td class="align-middle">
                                             <a th:href="@{/cart/delete(cartId=${tempCart.cartId}, username=${#authentication.principal.username})}"
                                                 class="btn btn-dark btn-sm"
-                                                onclick="if (!(confirm('Are you sure to delete this book?'))) return false">Remove</a>
+                                                onclick="if (!(confirm('Are you sure to delete this book?'))) return false">Remove</a><!--Add #-->
                                         </td>
 
                                     </tr>
@@ -173,13 +176,17 @@
                                             <p class="mb-2">Total (tax included)</p>
                                             <p class="mb-2">$<span id="totalPrice"></span></p>
                                         </div>
-
-                                        <button type="button" class="btn btn-primary btn-block btn-lg">
-                                            <div class="d-flex justify-content-between">
-                                                <span>Checkout $</span>
-                                                <span id="total"></span>
-                                            </div>
-                                        </button>
+                                        <form id="pay-form"
+                                            th:action="@{/cart/pay(username=${#authentication.principal.username})}"
+                                            method="post"> <!-- add #-->
+                                            <input type="hidden" id="selected-item-ids" name="itemIds" />
+                                            <button type="submit" class="btn btn-primary btn-block btn-lg">
+                                                <div class="d-flex justify-content-between">
+                                                    <span>Checkout $</span>
+                                                    <span id="total"></span>
+                                                </div>
+                                            </button>
+                                        </form>
 
                                     </div>
                                 </div>
@@ -248,8 +255,29 @@
         });
 
 
+    </script>
+    <script th:inline="javascript">
+        $(document).ready(function () {
+            var payForm = $('#pay-form');
+            var selectedItemIdsInput = $('#selected-item-ids');
+            var cartItems = $('.cart-item');
+            var selectedIds = [];
+
+            cartItems.each(function () {
+                var itemId = parseInt($(this).data('cart-id')); //retrieve data-cart-id
+                selectedIds.push(itemId);
+            });
+
+            console.log(selectedIds);
+            payForm.on('submit', function () {
+                event.preventDefault(); // Prevent the form from submitting normally
+
+                selectedItemIdsInput.val(selectedIds); // Set the selected cart IDs
+                payForm.off('submit').submit(); // Submit the form
+            });
 
 
+        });
     </script>
 </body>
 

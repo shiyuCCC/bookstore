@@ -9,6 +9,7 @@ public class CartInfoDTO {
     private String bookAuthor;
     private String bookImage;
     private int bookPrice;
+    private String bookCategory;
     private int bookQuantity;
     private String buyerUsername;
 
@@ -16,23 +17,26 @@ public class CartInfoDTO {
     }
 
     public CartInfoDTO(int cartId, String bookTitle, String bookAuthor, String bookImage, int bookPrice,
+            String bookCategory,
             int bookQuantity, String buyerUsername) {
         this.cartId = cartId;
         this.bookTitle = bookTitle;
         this.bookAuthor = bookAuthor;
         this.bookImage = bookImage;
         this.bookPrice = bookPrice;
+        this.bookCategory = bookCategory;
         this.bookQuantity = bookQuantity;
         this.buyerUsername = buyerUsername;
     }
 
-    public CartInfoDTO(String bookTitle, String bookAuthor, String bookImage, int bookPrice,
+    public CartInfoDTO(String bookTitle, String bookAuthor, String bookImage, int bookPrice, String bookCategory,
             int bookQuantity, String buyerUsername) {
 
         this.bookTitle = bookTitle;
         this.bookAuthor = bookAuthor;
         this.bookImage = bookImage;
         this.bookPrice = bookPrice;
+        this.bookCategory = bookCategory;
         this.bookQuantity = bookQuantity;
         this.buyerUsername = buyerUsername;
     }
@@ -77,6 +81,14 @@ public class CartInfoDTO {
 
     public void setBookPrice(int bookPrice) {
         this.bookPrice = bookPrice;
+    }
+
+    public String getBookCategory() {
+        return this.bookCategory;
+    }
+
+    public void setBookCategory(String bookCategory) {
+        this.bookCategory = bookCategory;
     }
 
     public int getBookQuantity() {

@@ -82,4 +82,11 @@ public class CartController {
         return "redirect:/cart/cartInfoByUser?username=" + theUsername;
     }
 
+    @PostMapping("/pay")
+    public String processPayment(@RequestParam("itemIds") List<Integer> itemIds,
+            @RequestParam("username") String theUsername) {
+        cartService.deleteAllByIdIn(itemIds);
+        return "redirect:/cart/cartInfoByUser?username=" + theUsername;
+    }
+
 }
