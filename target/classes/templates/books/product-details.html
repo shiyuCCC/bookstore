@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
     <meta charset="UTF-8">
@@ -16,7 +16,7 @@
     <!--Navbar-->
     <nav class="navbar navbar-expand-lg bg-body-tertiary mb-2">
         <div class="container px-4 px-lg-5">
-            <a class="navbar-brand mb-1" th:href="@{/books/shoppingList}">BookStore</a>
+            <a class="navbar-brand mb-1" th:href="@{/}">BookStore</a>
 
             <form id="formSearch" class="form-inline my-2 my-lg-0 d-flex col-sm-7">
                 <input class="form-control mr-sm-2 " type="search" placeholder="Search any category">
@@ -32,31 +32,33 @@
             <div class="collapse navbar-collapse justify-content-end" id="navbarTogglerDemo01">
 
                 <ul class="navbar-nav my-2 mb-lg-0 text-center  ">
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{/books/list}">seller's center</a>
-                    </li>
+                    <div sec:authorize="hasRole('STAFF')">
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/staff/list}">seller's center</a>
+                        </li>
+                    </div>
                     <li class="nav-item" id="anchorLogin">
                         <a class="btn btn-warning btn-sm mt-1 mx-1">Hello, <span
                                 sec:authentication="principal.username"></span></a>
                     </li>
                     <li class="nav-item" id="anchorRegister">
-                        <a class="btn btn-warning btn-sm mt-1 mx-1 px-2" href="loginregister.html?register=1">Logout</a>
+                        <form action="#" th:action="@{/logout}" method="POST">
+                            <input type="submit" class="btn btn-warning btn-sm mt-1 mx-1 px-2" value="Logout" />
+                        </form>
                     </li>
                     <!--Shopping cart-->
                     <!--TODO: 1.Link button to cart page 2.show dynamic cart item numbers-->
-                    <form class="d-flex">
-                        <button class="btn btn-outline-dark" type="submit">
-                            <i class="bi-cart-fill me-1"></i>
-                            Cart
-                            <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
-                        </button>
-                    </form>
+                    <a class="btn btn-outline-dark"
+                        th:href="@{/cart/cartInfoByUser(username=${#authentication.principal.username})}">
+                        <i class="bi-cart-fill me-1"></i>
+                        Cart
+                        <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
+                    </a>
                 </ul>
             </div>
         </div>
     </nav>
 
-    <!--TODO: Add header for freeshipping info-->
 
     <!--Main Content-->
     <div class="container">
@@ -69,18 +71,40 @@
                     <div class="col-md-6">
                         <div class="small mb-1" th:text="'ISBN: '+${book.isbn}"></div>
                         <h1 class="display-5 fw-bolder" th:text="${book.title}"></h1>
-                        <div class="small mb-3" th:text="'Author: '+${book.author}"></div>
+                        <div class="small mb-1" th:text="'Author: '+${book.author}"></div>
+
                         <div class="fs-3 mb-5">
-                            <span th:text="'$'+${book.price}">$40.00</span>
+                            <span th:text="'$'+${book.price}"></span>
                         </div>
+                        <h5>Description:</h5>
+                        <i class="small mb-3" th:text="'Category: '+${book.category}"></i>
                         <p class="lead" th:text="${book.description}"></p>
+                        <div>
+                            Book ID: [[${book}]] <!-- Using the double square brackets to print the value -->
+                            Cart: [[${cart.book}]] <!-- Using the double square brackets to print the value -->
+                            User:[[${#authentication.principal.username}]]
+                        </div>
+                        <br><br>
                         <div class="d-flex">
-                            <input class="form-control text-center me-3" id="inputQuantity" type="num" value="1"
-                                style="max-width: 3rem" />
-                            <button class="btn btn-outline-dark flex-shrink-0" type="button">
-                                <i class="bi-cart-fill me-1"></i>
-                                Add to cart
-                            </button>
+
+
+
+
+
+
+                            <form th:object="${cart}" th:action="@{/cart/save}" method="post">
+                                <input type="hidden" th:field="*{book}" th:value="${cart.book.id}" />
+                                <input type="hidden" th:field="*{buyer}"
+                                    th:value="${#authentication.principal.username}" />
+                                <input class="form-control text-center me-3" th:field="*{quantity}" type="text"
+                                    style="max-width: 3rem" />
+                                <button class="btn btn-outline-dark flex-shrink-0" type="submit">
+                                    <i class="bi-cart-fill me-1"></i>
+                                    Add to cart
+                                </button>
+                            </form>
+
+
                         </div>
                     </div>
                 </div>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
     <meta charset="UTF-8">
@@ -16,7 +16,7 @@
     <!--Navbar-->
     <nav class="navbar navbar-expand-lg bg-body-tertiary mb-2">
         <div class="container px-4 px-lg-5">
-            <a class="navbar-brand mb-1" th:href="@{/books/shoppingList}">BookStore</a>
+            <a class="navbar-brand mb-1" th:href="@{/}">BookStore</a>
 
             <form id="formSearch" class="form-inline my-2 my-lg-0 d-flex col-sm-7">
                 <input class="form-control mr-sm-2 " type="search" placeholder="Search any category">
@@ -32,21 +32,30 @@
             <div class="collapse navbar-collapse justify-content-end" id="navbarTogglerDemo01">
 
                 <ul class="navbar-nav my-2 mb-lg-0 text-center  ">
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{/books/list}">seller's center</a>
-                    </li>
+                    <div sec:authorize="hasRole('STAFF')">
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/staff/list}">seller's center</a>
+                        </li>
+                    </div>
+
                     <li class="nav-item" id="anchorLogin">
                         <a class="btn btn-warning btn-sm mt-1 mx-1">Hello, <span
                                 sec:authentication="principal.username"></span></a>
                     </li>
                     <li class="nav-item" id="anchorRegister">
-                        <a class="btn btn-warning btn-sm mt-1 mx-1 px-2" href="loginregister.html?register=1">Logout</a>
+                        <form action="#" th:action="@{/logout}" method="POST">
+                            <input type="submit" class="btn btn-warning btn-sm mt-1 mx-1 px-2" value="Logout" />
+                        </form>
                     </li>
                     <!--Shopping cart-->
-                    <li class="nav-item ">
-                        <a href="shoppingcart.html" target="_self"><i
-                                class="bi bi-cart-check-fill display-6 icon-link mx-2"></i></a>
-                    </li>
+
+                    <a class="btn btn-outline-dark"
+                        th:href="@{/cart/cartInfoByUser(username=${#authentication.principal.username})}">
+                        <i class="bi-cart-fill me-1"></i>
+                        Cart
+                        <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
+                    </a>
+
                 </ul>
             </div>
         </div>
@@ -89,7 +98,7 @@
                             <!-- Product actions-->
                             <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
                                 <a class="btn btn-outline-dark mt-auto"
-                                    th:href="@{/books/showProductDetails(bookId=${tempBook.id})}">View
+                                    th:href="@{/showProductDetails(bookId=${tempBook.id}, username=${#authentication.principal.username})}">View
                                     Details</a>
 
                             </div>

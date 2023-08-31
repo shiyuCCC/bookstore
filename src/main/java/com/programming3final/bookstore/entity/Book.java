@@ -1,5 +1,7 @@
 package com.programming3final.bookstore.entity;
 
+import java.util.List;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -7,6 +9,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -38,14 +41,16 @@ public class Book {
     @Column(name = "title")
     private String title;
 
+    @NotBlank(message = "is required")
+    @Size(min = 1, message = "is required")
     @Column(name = "author")
     private String author;
 
+    @NotBlank(message = "is required")
+    @Size(min = 1, message = "is required")
     @Column(name = "category")
     private String category;
 
-    @NotBlank(message = "is required")
-    @Size(min = 1, message = "is required")
     @Column(name = "quantity")
     private int quantity;
 
@@ -61,6 +66,9 @@ public class Book {
 
     @Column(name = "description")
     private String description;
+
+    @OneToMany(mappedBy = "book")
+    private List<Cart> carts;
 
     // constructors: 1.default 2. with id 3.without id
 
@@ -174,6 +182,14 @@ public class Book {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public List<Cart> getCarts() {
+        return this.carts;
+    }
+
+    public void setCarts(List<Cart> carts) {
+        this.carts = carts;
     }
 
 }
