@@ -52,7 +52,7 @@
                         th:href="@{/cart/cartInfoByUser(username=${#authentication.principal.username})}">
                         <i class="bi-cart-fill me-1"></i>
                         Cart
-                        <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
+                        <span class="badge bg-dark text-white ms-1 rounded-pill">1</span>
                     </a>
                 </ul>
             </div>
@@ -79,29 +79,42 @@
                         <h5>Description:</h5>
                         <i class="small mb-3" th:text="'Category: '+${book.category}"></i>
                         <p class="lead" th:text="${book.description}"></p>
+                        <!--  For testing
                         <div>
-                            Book ID: [[${book}]] <!-- Using the double square brackets to print the value -->
-                            Cart: [[${cart.book}]] <!-- Using the double square brackets to print the value -->
+                            Book ID: [[${book}]]
+                            Cart: [[${cart.book}]]
                             User:[[${#authentication.principal.username}]]
                         </div>
                         <br><br>
+                        -->
                         <div class="d-flex">
-
-
-
-
-
 
                             <form th:object="${cart}" th:action="@{/cart/save}" method="post">
                                 <input type="hidden" th:field="*{book}" th:value="${cart.book.id}" />
                                 <input type="hidden" th:field="*{buyer}"
                                     th:value="${#authentication.principal.username}" />
-                                <input class="form-control text-center me-3" th:field="*{quantity}" type="text"
-                                    style="max-width: 3rem" />
-                                <button class="btn btn-outline-dark flex-shrink-0" type="submit">
-                                    <i class="bi-cart-fill me-1"></i>
-                                    Add to cart
-                                </button>
+
+                                <div class="d-flex flex-row align-items-center">
+                                    <button class="btn btn-link px-2"
+                                            onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
+                                        <i class="fas fa-minus"></i>
+                                    </button>
+
+                                <input min="1" class="form-control text-center me-3" th:field="*{quantity}" type="number"
+                                    style="width: 4rem" value="1"/>
+
+                                    <button class="btn btn-link px-2"
+                                            onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+
+                                    <button class="btn btn-outline-dark flex-shrink-0" type="submit">
+                                        <i class="bi-cart-fill me-1"></i>
+                                        Add to cart
+                                    </button>
+
+                                </div>
+
                             </form>
 
 

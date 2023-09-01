@@ -5,11 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import com.programming3final.bookstore.service.BookService;
 import com.programming3final.bookstore.service.CartService;
@@ -17,10 +13,8 @@ import com.programming3final.bookstore.service.UserService;
 
 import jakarta.validation.Valid;
 
-import com.programming3final.bookstore.entity.Book;
 import com.programming3final.bookstore.entity.Cart;
 import com.programming3final.bookstore.entity.CartInfoDTO;
-import com.programming3final.bookstore.entity.User;
 
 @Controller
 @RequestMapping("/cart")
@@ -52,23 +46,6 @@ public class CartController {
         }
     }
 
-    // @PostMapping("/save")
-    // public String addToCart(@ModelAttribute("cart") Cart cart) {
-    // // Retrieve the Book and User entities based on the IDs and buyerName
-    // Book book = bookService.findById(cart.getBook().getId());
-    // User buyer = userService.findByUsername(cart.getBuyer().getUsername());
-
-    // // Set the retrieved Book and User in the cart
-    // cart.setBook(book);
-    // cart.setBuyer(buyer);
-
-    // // Save the cart to the database
-    // cartService.save(cart);
-
-    // return "books/shopping-list"; // Redirect to a relevant page after adding to
-    // cart
-    // }
-
     @GetMapping("/cartInfoByUser")
     public String findByUsername(@RequestParam("username") String theUsername, Model theModel) {
         List<CartInfoDTO> theCarts = cartService.getCartInfo(theUsername);
@@ -84,9 +61,11 @@ public class CartController {
 
     @PostMapping("/pay")
     public String processPayment(@RequestParam("itemIds") List<Integer> itemIds,
-            @RequestParam("username") String theUsername) {
+            @RequestParam("username") String theUsername, Model theModel) {
+        List<CartInfoDTO> theCartsInfo = cartService.getCartInfo(theUsername);
+        theModel.addAttribute("cartsInfo", theCartsInfo);
         cartService.deleteAllByIdIn(itemIds);
-        return "redirect:/cart/cartInfoByUser?username=" + theUsername;
+        return "carts/paymentConfirm";
     }
 
 }

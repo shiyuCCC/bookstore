@@ -53,7 +53,7 @@
                         th:href="@{/cart/cartInfoByUser(username=${#authentication.principal.username})}">
                         <i class="bi-cart-fill me-1"></i>
                         Cart
-                        <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
+                        <span class="badge bg-dark text-white ms-1 rounded-pill" id="cartItemNumber">1</span>
                     </a>
 
                 </ul>
@@ -65,8 +65,8 @@
     <header class="bg-light py-5 mb-2">
         <div class="container px-4 px-lg-5 my-5">
             <div class="text-center text-dark">
-                <h1 class="display-4 fw-bolder">Reading </h1>
-                <p class="lead fw-normal text-dark-50 mb-0">makes your life an adventure</p>
+                <h1 class="display-4 fw-bolder">Books</h1>
+                <p class="lead fw-normal text-dark-50 mb-0">are a uniquely portable magic.</p>
             </div>
         </div>
     </header>
