@@ -24,4 +24,4 @@ hs_err_pid*
 replay_pid*
 
 #credentials
-# /src/main/resources/env.properties
+/src/main/resources/env.properties
